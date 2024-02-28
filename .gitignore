@@ -38,3 +38,7 @@ out/
 
 ## H2 database files
 /data/*.db
+
+/src/main/resources/public/**/*
+.env
+/api/data/*

@@ -1,0 +1,13 @@
+**/*.md
+**/*.env
+**/*.env.example
+**/*.git
+**/*.gitignore
+**/*.idea
+api/.gradle
+api/build
+api/data
+api/gradlew.bat
+ui/build
+ui/node_modules
+docker-compose.yaml
