@@ -54,5 +54,5 @@ class UrlController(
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
-    private fun getShortUrlPrefix() = "/s/";
+    private fun getShortUrlPrefix() = System.getenv("SERVER_BASE_URL") + "/s/";
 }
