@@ -1,5 +1,6 @@
 package land.ver.url_shortener.controllers
 
+import jakarta.validation.Valid
 import land.ver.url_shortener.API_PAGE_SIZE
 import land.ver.url_shortener.StubGeneratorService
 import land.ver.url_shortener.UrlRepository
@@ -39,7 +40,7 @@ class UrlController(
     }
 
     @PostMapping("")
-    fun create(@RequestBody shortenUrlRequest: ShortenUrlRequest): ResponseEntity<UrlResponse> {
+    fun create(@Valid @RequestBody shortenUrlRequest: ShortenUrlRequest): ResponseEntity<UrlResponse> {
         val url = urlRepository.save(Url(
             id = null,
             longUrl = shortenUrlRequest.longUrl,
