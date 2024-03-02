@@ -2,35 +2,41 @@ import { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
-export default function ShortenUrl({ shortenButtonDisabled, createShortUrl }) {
-  const [longUrl, setLongUrl] = useState('');
+export default function ShortenUrl({
+  shortenButtonDisabled: submitButtonDisabled,
+  createShortUrl,
+}) {
+  const [url, setUrl] = useState('');
 
-  function updateLongUrl(event) {
-    setLongUrl(event.target.value);
+  function handleSubmit(event) {
+    event.preventDefault();
+    createShortUrl(url);
   }
 
   return (
     <>
-      <h2 className="mb-3">Enter something long... we'll make it short!</h2>
-      <Form>
+      <h2 className="mb-4">Enter a long URL... we'll make it short!</h2>
+      <Form onSubmit={handleSubmit}>
         <Row>
-          <Col className="p-1">
+          <Col>
             <Form.Control
               type="url"
+              pattern="https?://.+\..+"
               placeholder="Enter a long URL..."
-              value={longUrl}
-              onChange={updateLongUrl}
-              className="mb-3 w-auto"
+              title="The URL must be valid and start with http:// or https://"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              className="mb-1 w-auto"
               autoFocus
+              required
             />
           </Col>
-          <Col className="p-1">
+          <Col>
             <Button
               variant="primary"
               type="submit"
-              onClick={() => createShortUrl(longUrl)}
-              disabled={shortenButtonDisabled}>
-              {shortenButtonDisabled ? 'Shortening...' : 'Make it short!'}
+              disabled={submitButtonDisabled}>
+              {submitButtonDisabled ? 'Shortening...' : 'Make it short!'}
             </Button>
           </Col>
         </Row>
