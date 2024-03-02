@@ -9,6 +9,7 @@ import land.ver.url_shortener.dtos.urls.UrlResponse
 import land.ver.url_shortener.exceptions.InvalidPageNumberException
 import land.ver.url_shortener.dtos.PagedApiResult
 import land.ver.url_shortener.dtos.PaginationMetadata
+import land.ver.url_shortener.mappers.UrlResponseMapper
 import land.ver.url_shortener.models.Url
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -29,12 +30,7 @@ class UrlController(
 
         val pageable = Pageable.ofSize(API_PAGE_SIZE).withPage(pageNumber - 1)
         val pagedResult = urlRepository.findAll(pageable)
-        val urls = pagedResult.toList().map {
-            UrlResponse(
-                longUrl = it.longUrl,
-                shortenedUrl = getShortUrlPrefix() + it.stub
-            )
-        }
+        val urls = pagedResult.toList().map { UrlResponseMapper().map(it) }
 
         return PagedApiResult(urls, PaginationMetadata(pagedResult.number, pagedResult.totalPages, pagedResult.size))
     }
@@ -47,13 +43,6 @@ class UrlController(
             stub = stubGenerator.generate(),
         ))
 
-        val response = UrlResponse(
-            longUrl = url.longUrl,
-            shortenedUrl = getShortUrlPrefix() + url.stub,
-        )
-
-        return ResponseEntity(response, HttpStatus.CREATED)
+        return ResponseEntity(UrlResponseMapper().map(url), HttpStatus.CREATED)
     }
-
-    private fun getShortUrlPrefix() = System.getenv("SERVER_BASE_URL") + "/s/";
 }
