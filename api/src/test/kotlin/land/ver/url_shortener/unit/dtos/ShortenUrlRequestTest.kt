@@ -1,7 +1,8 @@
-package land.ver.url_shortener.dtos
+package land.ver.url_shortener.unit.dtos
 
 import jakarta.validation.Validation
 import jakarta.validation.Validator
+import land.ver.url_shortener.dtos.ShortenUrlRequest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

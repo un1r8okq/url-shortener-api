@@ -1,11 +1,13 @@
-package land.ver.url_shortener
+package land.ver.url_shortener.unit
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
+import land.ver.url_shortener.UserRepository
+import land.ver.url_shortener.controllers.UserController
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
@@ -13,12 +15,11 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
+@WebMvcTest(controllers = [UserController::class])
 @AutoConfigureMockMvc
-@SpringBootTest
 class UserControllerTest(@Autowired private val mvc: MockMvc) {
-
     @MockkBean
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     @Test
     fun givenNoUsers_whenGetIndex_thenReturnsOk() {
