@@ -1,4 +1,4 @@
-package land.ver.url_shortener
+package land.ver.url_shortener.services
 
 import org.springframework.stereotype.Service
 

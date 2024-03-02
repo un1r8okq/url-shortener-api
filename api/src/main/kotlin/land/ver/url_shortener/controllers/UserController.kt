@@ -1,12 +1,12 @@
 package land.ver.url_shortener.controllers
 
 import jakarta.validation.Valid
-import land.ver.url_shortener.UserRepository
+import land.ver.url_shortener.repositories.UserRepository
 import land.ver.url_shortener.exceptions.InvalidPageNumberException
 import land.ver.url_shortener.exceptions.UserEmailAlreadyInUseException
 import land.ver.url_shortener.exceptions.UserNotFoundException
-import land.ver.url_shortener.http.ApiResult
-import land.ver.url_shortener.http.PagedApiResult
+import land.ver.url_shortener.dtos.ApiResult
+import land.ver.url_shortener.dtos.PagedApiResult
 import land.ver.url_shortener.models.User
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus

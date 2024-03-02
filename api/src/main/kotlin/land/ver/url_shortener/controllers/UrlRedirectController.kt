@@ -1,6 +1,6 @@
 package land.ver.url_shortener.controllers
 
-import land.ver.url_shortener.UrlRepository
+import land.ver.url_shortener.repositories.UrlRepository
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

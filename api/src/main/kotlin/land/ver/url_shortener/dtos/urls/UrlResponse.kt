@@ -1,4 +1,4 @@
-package land.ver.url_shortener.dtos
+package land.ver.url_shortener.dtos.urls
 
 data class UrlResponse(
     val longUrl: String,

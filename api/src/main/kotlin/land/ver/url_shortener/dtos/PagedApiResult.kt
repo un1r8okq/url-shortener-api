@@ -1,4 +1,4 @@
-package land.ver.url_shortener.http
+package land.ver.url_shortener.dtos
 
 import org.springframework.data.domain.Page
 

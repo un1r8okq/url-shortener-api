@@ -2,7 +2,7 @@ package land.ver.url_shortener.unit
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import land.ver.url_shortener.UserRepository
+import land.ver.url_shortener.repositories.UserRepository
 import land.ver.url_shortener.controllers.UserController
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

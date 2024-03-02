@@ -3,8 +3,8 @@ package land.ver.url_shortener.unit
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import land.ver.url_shortener.RandomNumberService
-import land.ver.url_shortener.StubGeneratorService
+import land.ver.url_shortener.services.RandomNumberService
+import land.ver.url_shortener.services.StubGeneratorService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

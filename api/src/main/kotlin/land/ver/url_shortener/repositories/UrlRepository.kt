@@ -1,4 +1,4 @@
-package land.ver.url_shortener
+package land.ver.url_shortener.repositories
 
 import land.ver.url_shortener.models.Url
 import org.springframework.data.jpa.repository.JpaRepository

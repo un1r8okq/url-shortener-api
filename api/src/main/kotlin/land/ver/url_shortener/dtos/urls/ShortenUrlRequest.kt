@@ -1,4 +1,4 @@
-package land.ver.url_shortener.dtos
+package land.ver.url_shortener.dtos.urls
 
 import jakarta.validation.constraints.NotEmpty
 import org.hibernate.validator.constraints.URL

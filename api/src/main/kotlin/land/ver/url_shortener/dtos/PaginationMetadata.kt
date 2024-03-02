@@ -1,4 +1,4 @@
-package land.ver.url_shortener.http
+package land.ver.url_shortener.dtos
 
 class PaginationMetadata(
     val pageNumber: Int,

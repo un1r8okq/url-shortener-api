@@ -2,13 +2,13 @@ package land.ver.url_shortener.controllers
 
 import jakarta.validation.Valid
 import land.ver.url_shortener.API_PAGE_SIZE
-import land.ver.url_shortener.StubGeneratorService
-import land.ver.url_shortener.UrlRepository
-import land.ver.url_shortener.dtos.ShortenUrlRequest
-import land.ver.url_shortener.dtos.UrlResponse
+import land.ver.url_shortener.services.StubGeneratorService
+import land.ver.url_shortener.repositories.UrlRepository
+import land.ver.url_shortener.dtos.urls.ShortenUrlRequest
+import land.ver.url_shortener.dtos.urls.UrlResponse
 import land.ver.url_shortener.exceptions.InvalidPageNumberException
-import land.ver.url_shortener.http.PagedApiResult
-import land.ver.url_shortener.http.PaginationMetadata
+import land.ver.url_shortener.dtos.PagedApiResult
+import land.ver.url_shortener.dtos.PaginationMetadata
 import land.ver.url_shortener.models.Url
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
