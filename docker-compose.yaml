@@ -9,6 +9,7 @@ services:
       POSTGRES_USER: url_shortener
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: url_shortener
+      SERVER_BASE_URL: ${SERVER_BASE_URL}
     depends_on:
       - postgresql
   postgresql:
