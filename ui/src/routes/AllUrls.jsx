@@ -74,7 +74,7 @@ export default function AllUrls() {
             ))}
           </tbody>
         </Table>
-        <ButtonGroup className="mt-4 m-auto">
+        <ButtonGroup className="mt-4 m-auto" hidden={totalPages === 1}>
           <Button
             variant="secondary"
             disabled={pageNumber < 1}
@@ -83,7 +83,7 @@ export default function AllUrls() {
           </Button>
           <Button
             variant="secondary"
-            disabled={pageNumber >= totalPages}
+            disabled={pageNumber >= totalPages - 1}
             onClick={() => setPageNumber(pageNumber + 1)}>
             Next page
           </Button>
