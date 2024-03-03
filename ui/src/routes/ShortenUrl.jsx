@@ -12,6 +12,7 @@ export default function ShortenUrl() {
 
   async function createShortUrl(longUrl) {
     setShortenButtonDisabled(true);
+    setError('');
 
     try {
       const result = await axios.post('/api/v1/urls', { longUrl });
@@ -61,7 +62,7 @@ export default function ShortenUrl() {
       <div className="d-flex flex-column justify-content-center align-items-center">
         {shortenedUrl === '' ? shortenUrlForm : shortenUrlResult}
         {error && (
-          <Alert className="w-50" variant="danger">
+          <Alert className="w-50 mt-3" variant="danger">
             {error}
           </Alert>
         )}
