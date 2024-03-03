@@ -6,7 +6,7 @@ data class PagedApiResult<T>(val data: List<T>, val paginationMetadata: Paginati
     constructor(pageResult: Page<T>) : this(
         data = pageResult.toList(),
         paginationMetadata = PaginationMetadata(
-            pageNumber = pageResult.number + 1,
+            pageNumber = pageResult.number,
             totalPages = pageResult.totalPages,
             pageSize = pageResult.size
         ),

@@ -26,15 +26,15 @@ class UrlController(
 ) {
     @GetMapping("", "/")
     fun index(@RequestParam pageNumber: Int): PagedApiResult<UrlResponse> {
-        if (pageNumber < 1) {
+        if (pageNumber < 0) {
             throw InvalidPageNumberException(pageNumber)
         }
 
-        val pageable = Pageable.ofSize(API_PAGE_SIZE).withPage(pageNumber - 1)
+        val pageable = Pageable.ofSize(API_PAGE_SIZE).withPage(pageNumber)
         val pagedResult = urlRepository.findAll(pageable)
         val urls = pagedResult.toList().map { UrlResponseMapper().map(it) }
 
-        return PagedApiResult(urls, PaginationMetadata(pagedResult.number + 1, pagedResult.totalPages, pagedResult.size))
+        return PagedApiResult(urls, PaginationMetadata(pagedResult.number, pagedResult.totalPages, pagedResult.size))
     }
 
     @PostMapping("")

@@ -5,7 +5,7 @@ import { Alert, Button, ButtonGroup, Spinner, Table } from 'react-bootstrap';
 export default function AllUrls() {
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [urls, setUrls] = useState([]);
 
@@ -77,7 +77,7 @@ export default function AllUrls() {
         <ButtonGroup className="mt-4 m-auto">
           <Button
             variant="secondary"
-            disabled={pageNumber === 1}
+            disabled={pageNumber < 1}
             onClick={() => setPageNumber(pageNumber - 1)}>
             Previous page
           </Button>
