@@ -1,13 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import {
-  Alert,
-  Button,
-  ButtonGroup,
-  ListGroup,
-  ListGroupItem,
-  Spinner,
-} from 'react-bootstrap';
+import { Alert, Button, ButtonGroup, Spinner, Table } from 'react-bootstrap';
 
 export default function AllUrls() {
   const [error, setError] = useState('');
@@ -28,7 +21,6 @@ export default function AllUrls() {
 
         const { data, paginationMetadata } = response.data;
 
-        setPageNumber(paginationMetadata.pageNumber + 1);
         setTotalPages(paginationMetadata.totalPages);
         setUrls(data);
         setLoading(false);
@@ -43,25 +35,45 @@ export default function AllUrls() {
     fetchUrls();
   }, [pageNumber]);
 
-  let result = null;
+  const getContent = () => {
+    if (error !== '') {
+      return <Alert variant="danger">{error}</Alert>;
+    }
 
-  if (error !== '') {
-    result = <Alert variant="danger">{error}</Alert>;
-  } else if (isLoading) {
-    result = (
-      <div className="flex-grow-1 d-flex justify-content-center align-items-center">
-        <Spinner className="m-2" />
-        <h3>Loading URLs</h3>
-      </div>
-    );
-  } else if (!isLoading) {
-    result = (
+    if (isLoading) {
+      return (
+        <div className="flex-grow-1 d-flex justify-content-center align-items-center">
+          <Spinner className="m-2" />
+          <h3>Loading URLs</h3>
+        </div>
+      );
+    }
+
+    if (urls.length === 0) {
+      return <h2>No URLs have been shortened yet.</h2>;
+    }
+
+    return (
       <>
-        <ListGroup>
-          {urls.map((url, index) => (
-            <ListGroupItem key={index}>{url.longUrl}</ListGroupItem>
-          ))}
-        </ListGroup>
+        <Table>
+          <thead>
+            <tr>
+              <th>Created at</th>
+              <th>URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {urls.map((url, index) => (
+              <tr key={index}>
+                <td>
+                  {new Date(url.createdTimestampUtc).toLocaleDateString()} at{' '}
+                  {new Date(url.createdTimestampUtc).toLocaleTimeString()}
+                </td>
+                <td>{url.longUrl}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
         <ButtonGroup className="mt-4 m-auto">
           <Button
             variant="secondary"
@@ -78,7 +90,7 @@ export default function AllUrls() {
         </ButtonGroup>
       </>
     );
-  }
+  };
 
-  return <div className="h-100 m-5 d-flex flex-column">{result}</div>;
+  return <div className="h-100 m-5 d-flex flex-column">{getContent()}</div>;
 }

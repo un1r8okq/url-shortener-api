@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.GenericGenerator
+import java.time.Clock
+import java.time.Instant
 import java.util.*
 
 @Entity
@@ -16,6 +18,7 @@ data class Url(
     val id: UUID?,
     val longUrl: String,
     val stub: String,
+    val createdTimestampUtc: Instant,
 ) {
-    constructor(): this(null, "", "")
+    constructor(): this(null, "", "", Instant.now(Clock.systemUTC()))
 }

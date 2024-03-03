@@ -7,9 +7,10 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS urls (
-    id          UUID            NOT NULL,
-    long_url    VARCHAR(2048)   NOT NULL,
-    stub        CHAR(4)         NOT NULL,
+    id                          UUID            NOT NULL,
+    long_url                    VARCHAR(2048)   NOT NULL,
+    stub                        CHAR(4)         NOT NULL,
+    created_timestamp_utc       TIMESTAMP       NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (stub)
 );

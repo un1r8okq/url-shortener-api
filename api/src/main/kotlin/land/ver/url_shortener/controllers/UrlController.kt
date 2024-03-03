@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.Clock
+import java.time.Instant
 
 @RestController
 @RequestMapping("/api/v1/urls")
@@ -32,7 +34,7 @@ class UrlController(
         val pagedResult = urlRepository.findAll(pageable)
         val urls = pagedResult.toList().map { UrlResponseMapper().map(it) }
 
-        return PagedApiResult(urls, PaginationMetadata(pagedResult.number, pagedResult.totalPages, pagedResult.size))
+        return PagedApiResult(urls, PaginationMetadata(pagedResult.number + 1, pagedResult.totalPages, pagedResult.size))
     }
 
     @PostMapping("")
@@ -41,6 +43,7 @@ class UrlController(
             id = null,
             longUrl = shortenUrlRequest.longUrl,
             stub = stubGenerator.generate(),
+            createdTimestampUtc = Instant.now(Clock.systemUTC())
         ))
 
         return ResponseEntity(UrlResponseMapper().map(url), HttpStatus.CREATED)

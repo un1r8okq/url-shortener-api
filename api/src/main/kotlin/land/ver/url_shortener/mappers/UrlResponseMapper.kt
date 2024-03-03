@@ -8,5 +8,6 @@ class UrlResponseMapper {
     fun map(url: Url) = UrlResponse(
         longUrl = url.longUrl,
         shortenedUrl = System.getenv("SERVER_BASE_URL") + SHORT_URL_PATH_PREFIX,
+        createdTimestampUtc = url.createdTimestampUtc.toString(),
     )
 }
