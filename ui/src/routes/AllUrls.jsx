@@ -1,11 +1,19 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Alert, ListGroup, ListGroupItem, Spinner } from 'react-bootstrap';
+import {
+  Alert,
+  Button,
+  ButtonGroup,
+  ListGroup,
+  ListGroupItem,
+  Spinner,
+} from 'react-bootstrap';
 
 export default function AllUrls() {
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [urls, setUrls] = useState([]);
 
   useEffect(() => {
@@ -17,7 +25,12 @@ export default function AllUrls() {
         const response = await axios.get(
           `/api/v1/urls?pageNumber=${pageNumber}`,
         );
-        setUrls(response.data.data);
+
+        const { data, paginationMetadata } = response.data;
+
+        setPageNumber(paginationMetadata.pageNumber + 1);
+        setTotalPages(paginationMetadata.totalPages);
+        setUrls(data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -45,10 +58,24 @@ export default function AllUrls() {
     result = (
       <>
         <ListGroup>
-          {urls.map((url) => (
-            <ListGroupItem key={url.shortenedUrl}>{url.longUrl}</ListGroupItem>
+          {urls.map((url, index) => (
+            <ListGroupItem key={index}>{url.longUrl}</ListGroupItem>
           ))}
         </ListGroup>
+        <ButtonGroup className="mt-4 m-auto">
+          <Button
+            variant="secondary"
+            disabled={pageNumber === 1}
+            onClick={() => setPageNumber(pageNumber - 1)}>
+            Previous page
+          </Button>
+          <Button
+            variant="secondary"
+            disabled={pageNumber >= totalPages}
+            onClick={() => setPageNumber(pageNumber + 1)}>
+            Next page
+          </Button>
+        </ButtonGroup>
       </>
     );
   }
