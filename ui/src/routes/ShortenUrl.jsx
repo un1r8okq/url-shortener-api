@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useState } from 'react';
-import ShortenUrl from '../components/ShortenUrl';
-import ShortenedUrlResult from '../components/ShortenedUrlResult';
+import CreateShortUrl from '../components/CreateShortUrl';
+import ShortUrlResult from '../components/ShortUrlResult';
 import { Alert } from 'react-bootstrap';
 
-export default function CreateShortUrl() {
+export default function ShortenUrl() {
   const [shortenButtonDisabled, setShortenButtonDisabled] = useState(false);
   const [shortenedUrl, setShortenedUrl] = useState('');
   const [error, setError] = useState('');
@@ -47,24 +47,25 @@ export default function CreateShortUrl() {
   }
 
   const shortenUrlForm = (
-    <ShortenUrl
+    <CreateShortUrl
       shortenButtonDisabled={shortenButtonDisabled}
       createShortUrl={createShortUrl}
     />
   );
-  const shortenUrlResult = <ShortenedUrlResult resetForm={resetForm} shortenedUrl={shortenedUrl} />;
+  const shortenUrlResult = (
+    <ShortUrlResult resetForm={resetForm} shortenedUrl={shortenedUrl} />
+  );
 
   return (
-   
-        <div className="d-flex flex-column">
-          <div className="d-flex flex-column justify-content-center align-items-center">
-            {shortenedUrl === '' ? shortenUrlForm : shortenUrlResult}
-            {error && (
-              <Alert className="w-50" variant="danger">
-                {error}
-              </Alert>
-            )}
-          </div>
+    <div className="d-flex align-items-center justify-content-center flex-grow-1 m-3">
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        {shortenedUrl === '' ? shortenUrlForm : shortenUrlResult}
+        {error && (
+          <Alert className="w-50" variant="danger">
+            {error}
+          </Alert>
+        )}
+      </div>
     </div>
   );
 }

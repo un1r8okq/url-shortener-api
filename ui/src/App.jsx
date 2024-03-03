@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 function App() {
   return (
-    <div id="app" className="d-flex flex-column justify-content-between">
+    <div id="app" className="d-flex flex-column">
       <Navbar className="border-bottom">
         <Container>
           <Navbar.Brand>URL Shortener</Navbar.Brand>
@@ -20,11 +20,7 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-      <div id="app" className="d-flex flex-column justify-content-between">
-        <div className="m-3 h-100 d-flex align-items-center justify-content-center">
-          <Outlet />
-        </div>
-      </div>
+      <Outlet />
     </div>
   );
 }

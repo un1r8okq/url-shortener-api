@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
-export default function ShortenUrl({
+export default function CreateShortUrl({
   shortenButtonDisabled: submitButtonDisabled,
   createShortUrl,
 }) {
@@ -36,7 +36,7 @@ export default function ShortenUrl({
               variant="primary"
               type="submit"
               disabled={submitButtonDisabled}>
-              {submitButtonDisabled ? 'Shortening...' : 'Make it short!'}
+              {submitButtonDisabled ? 'Shortening...' : 'Shorten'}
             </Button>
           </Col>
         </Row>

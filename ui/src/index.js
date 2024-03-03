@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './components/ErrorPage';
 import AllUrls from './routes/AllUrls';
-import CreateShortUrl from './routes/CreateShortUrl';
+import ShortenUrl from './routes/ShortenUrl';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <CreateShortUrl />,
+        element: <ShortenUrl />,
       },
       {
         path: 'all-urls',
