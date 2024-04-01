@@ -14,3 +14,11 @@ CREATE TABLE IF NOT EXISTS urls (
     PRIMARY KEY (id),
     UNIQUE (stub)
 );
+
+CREATE TABLE IF NOT EXISTS url_visits (
+    id                          UUID            NOT NULL,
+    url_id                      UUID            NOT NULL,
+    timestamp_utc               TIMESTAMP       NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (url_id) REFERENCES urls(id)
+)
