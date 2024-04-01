@@ -31,13 +31,13 @@ class UrlController(
 ) {
     @GetMapping("", "/")
     fun index(@RequestParam pageNumber: Int): PagedApiResult<UrlResponse> {
-        if (pageNumber < 0) {
+        if (pageNumber < 1) {
             throw InvalidPageNumberException(pageNumber)
         }
 
-        val pageable = Pageable.ofSize(API_PAGE_SIZE).withPage(pageNumber)
+        val pageable = Pageable.ofSize(API_PAGE_SIZE).withPage(pageNumber - 1)
         val pagedResult = urlRepository.findAll(pageable)
-        val urls = pagedResult.toList().map { UrlResponseMapper().map(it, Instant.now()) }
+        val urls = pagedResult.toList().map { UrlResponseMapper().map(it) }
 
         return PagedApiResult(urls, PaginationMetadata(pagedResult.number, pagedResult.totalPages, pagedResult.size))
     }
@@ -49,10 +49,11 @@ class UrlController(
                 id = null,
                 longUrl = shortenUrlRequest.longUrl,
                 stub = stubGenerator.generate(),
-                createdTimestampUtc = Instant.now(Clock.systemUTC())
+                createdTimestampUtc = Instant.now(Clock.systemUTC()),
+                urlVisits = emptyList(),
             )
         )
 
-        return ResponseEntity(UrlResponseMapper().map(url, Instant.now()), HttpStatus.CREATED)
+        return ResponseEntity(UrlResponseMapper().map(url), HttpStatus.CREATED)
     }
 }

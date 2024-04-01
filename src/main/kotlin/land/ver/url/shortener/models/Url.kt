@@ -1,9 +1,6 @@
 package land.ver.url.shortener.models
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.GenericGenerator
 import java.time.Clock
 import java.time.Instant
@@ -19,6 +16,8 @@ data class Url(
     val longUrl: String,
     val stub: String,
     val createdTimestampUtc: Instant,
+    @OneToMany(mappedBy = "url", fetch = FetchType.EAGER)
+    val urlVisits: List<UrlVisit>,
 ) {
-    constructor() : this(null, "", "", Instant.now(Clock.systemUTC()))
+    constructor() : this(null, "", "", Instant.now(Clock.systemUTC()), emptyList())
 }

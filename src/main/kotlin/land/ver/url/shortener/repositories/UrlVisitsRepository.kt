@@ -7,5 +7,4 @@ import java.util.UUID
 
 @Repository
 interface UrlVisitsRepository : JpaRepository<UrlVisit, UUID> {
-    fun findAllByUrlIds(urlIds: List<UUID>): List<UrlVisit>
 }

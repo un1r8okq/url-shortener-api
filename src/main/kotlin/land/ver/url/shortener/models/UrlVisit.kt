@@ -1,11 +1,7 @@
 package land.ver.url.shortener.models
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.Table
-import org.hibernate.annotations.GenericGenerator
-import java.time.Clock
+import com.github.f4b6a3.uuid.UuidCreator
+import jakarta.persistence.*
 import java.time.Instant
 import java.util.*
 
@@ -13,11 +9,11 @@ import java.util.*
 @Table(name = "url_visits")
 data class UrlVisit(
     @Id
-    @GeneratedValue(generator = "uuidv7")
-    @GenericGenerator(name = "uuidv7", strategy = "land.ver.url.shortener.Uuidv7Generator")
-    val id: UUID?,
-    val urlId: UUID?,
+    val id: UUID,
     val timestampUtc: Instant,
+    @ManyToOne
+    @JoinColumn(name = "url_id")
+    val url: Url?,
 ) {
-    constructor() : this(null, null, Instant.now(Clock.systemUTC()))
+    constructor() : this(UuidCreator.getTimeBased(), Instant.now(), null)
 }
