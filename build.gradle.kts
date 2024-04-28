@@ -2,15 +2,20 @@ import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    val kotlinVersion = "1.9.22"
+
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
     id("io.gitlab.arturbosch.detekt") version "1.23.5"
-    kotlin("jvm") version "1.9.22"
-    kotlin("plugin.spring") version "1.9.22"
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
+    kotlin("plugin.jpa") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
 }
 
 group = "land.ver"
 version = "0.0.1-SNAPSHOT"
+val queryDslVersion = "5.1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -26,14 +31,27 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.github.f4b6a3:uuid-creator:5.3.3")
     implementation("org.hibernate.orm:hibernate-core")
-
-    runtimeOnly("org.postgresql:postgresql")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.querydsl:querydsl-apt")
+    implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
+    kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
+
+    runtimeOnly("org.postgresql:postgresql")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
     }
     testImplementation("com.ninja-squad:springmockk:4.0.2")
+}
+
+kapt {
+    javacOptions {
+        option("querydsl.entityAccessors", true)
+    }
+    arguments {
+        arg("plugin", "com.querydsl.apt.jpa.JPAAnnotationProcessor")
+    }
 }
 
 tasks.withType<KotlinCompile> {

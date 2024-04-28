@@ -3,7 +3,6 @@ package land.ver.url.shortener.controllers
 import com.github.f4b6a3.uuid.UuidCreator
 import land.ver.url.shortener.models.UrlVisit
 import land.ver.url.shortener.repositories.UrlRepository
-import land.ver.url.shortener.repositories.UrlVisitsRepository
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,7 +14,7 @@ import java.time.Instant
 
 @RestController
 @RequestMapping("/s")
-class UrlRedirectController(val urlRepository: UrlRepository, val urlVisitsRepository: UrlVisitsRepository) {
+class UrlRedirectController(val urlRepository: UrlRepository) {
     @GetMapping("/{stub}")
     fun index(@PathVariable stub: String): ResponseEntity<Any> {
         val url = urlRepository.findByStub(stub)
@@ -29,7 +28,7 @@ class UrlRedirectController(val urlRepository: UrlRepository, val urlVisitsRepos
             timestampUtc = Instant.now(),
             url = url,
         )
-        urlVisitsRepository.save(visit)
+        // TODO save URL visit
 
         val headers = HttpHeaders()
         headers.add("Location", url.longUrl)

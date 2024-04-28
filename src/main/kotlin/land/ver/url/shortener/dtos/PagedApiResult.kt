@@ -1,14 +1,14 @@
 package land.ver.url.shortener.dtos
 
-import org.springframework.data.domain.Page
+import land.ver.url.shortener.repositories.PagedResult
 
 data class PagedApiResult<T>(val data: List<T>, val paginationMetadata: PaginationMetadata?) {
-    constructor(pageResult: Page<T>) : this(
-        data = pageResult.toList(),
+    constructor(pageResult: PagedResult<T>) : this(
+        data = pageResult.results,
         paginationMetadata = PaginationMetadata(
-            pageNumber = pageResult.number,
-            totalPages = pageResult.totalPages,
-            pageSize = pageResult.size
+            pageNumber = pageResult.paginationMetadata.pageNumber,
+            totalPages = pageResult.paginationMetadata.totalPages,
+            pageSize = pageResult.paginationMetadata.pageSize,
         ),
     )
 }
