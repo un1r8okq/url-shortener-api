@@ -33,16 +33,17 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("com.querydsl:querydsl-apt")
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
     kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
 
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
     }
     testImplementation("com.ninja-squad:springmockk:4.0.2")
+    testImplementation("com.querydsl:querydsl-apt")
 }
 
 kapt {
