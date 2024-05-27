@@ -10,7 +10,7 @@ import java.util.*
 @Table(name = "urls")
 data class Url(
     @Id
-    val id: UUID?,
+    val id: UUID,
     val longUrl: String,
     val stub: String,
     val createdTimestampUtc: Instant,

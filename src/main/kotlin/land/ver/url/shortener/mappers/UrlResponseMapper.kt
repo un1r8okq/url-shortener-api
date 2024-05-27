@@ -3,12 +3,12 @@ package land.ver.url.shortener.mappers
 import land.ver.url.shortener.SHORT_URL_PATH_PREFIX
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.PaginationMetadata
-import land.ver.url.shortener.dtos.urls.UrlResponse
-import land.ver.url.shortener.models.Url
+import land.ver.url.shortener.dtos.urls.UrlResponseDTO
 import land.ver.url.shortener.repositories.PagedResult
+import land.ver.url.shortener.repositories.UrlResponse
 
 class UrlResponseMapper {
-    fun map(pagedResult: PagedResult<Url>) = PagedApiResult(
+    fun map(pagedResult: PagedResult<UrlResponse>) = PagedApiResult(
         pagedResult.results.map { map(it) },
         PaginationMetadata(
             pageNumber = pagedResult.paginationMetadata.pageNumber,
@@ -17,10 +17,10 @@ class UrlResponseMapper {
         ),
     )
 
-    fun map(url: Url) = UrlResponse(
+    fun map(url: UrlResponse) = UrlResponseDTO(
         longUrl = url.longUrl,
         shortenedUrl = System.getenv("SERVER_BASE_URL") + SHORT_URL_PATH_PREFIX + url.stub,
         createdTimestampUtc = url.createdTimestampUtc.toString(),
-        lastVisitTimestampUtc = null,
+        lastVisitTimestampUtc = url.lastVisitedTimestampUtc?.toString(),
     )
 }

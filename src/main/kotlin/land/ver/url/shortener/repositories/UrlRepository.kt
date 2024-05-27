@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.transaction.Transactional
 import land.ver.url.shortener.models.QUrl
+import land.ver.url.shortener.models.QUrlVisit
 import land.ver.url.shortener.models.Url
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
@@ -20,15 +21,16 @@ class UrlRepository(
     @Value("\${pageSize}") private val pageSize: Long,
 ) {
     @Transactional
-    fun save(newUrl: NewUrl): Url {
+    fun save(newUrl: NewUrl): UrlResponse {
         val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
         val url = QUrl.url
 
-        val result = Url(
+        val result = UrlResponse(
             id = UuidCreator.getTimeOrderedEpoch(),
             longUrl = newUrl.longUrl,
             stub = newUrl.stub,
             createdTimestampUtc = Instant.now(Clock.systemUTC()),
+            lastVisitedTimestampUtc = null,
         )
 
         queryFactory
@@ -50,7 +52,7 @@ class UrlRepository(
         return result
     }
 
-    fun getAll(pageNumber: Long): PagedResult<Url> {
+    fun getAll(pageNumber: Long): PagedResult<UrlResponse> {
         val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
 
         val urlCount = queryFactory
@@ -58,14 +60,29 @@ class UrlRepository(
             .from(QUrl.url)
             .fetchOne()
 
-        val urls = queryFactory
-            .selectFrom(QUrl.url)
+        val results = queryFactory
+            .select(QUrl.url, QUrlVisit.urlVisit.timestampUtc.max())
+            .from(QUrl.url)
+            .leftJoin(QUrlVisit.urlVisit).on(QUrl.url.id.eq(QUrlVisit.urlVisit.urlId))
+            .groupBy(QUrl.url.id)
+            .orderBy(QUrl.url.id.asc(), QUrlVisit.urlVisit.timestampUtc.max().asc())
             .offset(pageNumber * pageSize)
             .limit(pageSize)
             .fetch()
 
         return PagedResult(
-            results = urls,
+            results = results.map {
+                val url = it.get(QUrl.url)
+                val lastVisited = it.get(1, Instant::class.java)
+
+                UrlResponse(
+                    id = url!!.id,
+                    longUrl = url.longUrl,
+                    stub = url.stub,
+                    createdTimestampUtc = url.createdTimestampUtc,
+                    lastVisitedTimestampUtc = lastVisited,
+                )
+            },
             paginationMetadata = PaginationMetadata(
                 pageNumber = pageNumber,
                 pageSize = pageSize,
