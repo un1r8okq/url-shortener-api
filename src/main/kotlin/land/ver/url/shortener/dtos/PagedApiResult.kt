@@ -1,6 +1,6 @@
 package land.ver.url.shortener.dtos
 
-import land.ver.url.shortener.repositories.PagedResult
+import land.ver.url.shortener.repositories.dtos.PagedResult
 
 data class PagedApiResult<T>(val data: List<T>, val paginationMetadata: PaginationMetadata?) {
     constructor(pageResult: PagedResult<T>) : this(

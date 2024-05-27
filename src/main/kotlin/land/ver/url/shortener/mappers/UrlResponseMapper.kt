@@ -4,8 +4,8 @@ import land.ver.url.shortener.SHORT_URL_PATH_PREFIX
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.PaginationMetadata
 import land.ver.url.shortener.dtos.urls.UrlResponseDTO
-import land.ver.url.shortener.repositories.PagedResult
-import land.ver.url.shortener.repositories.UrlResponse
+import land.ver.url.shortener.repositories.dtos.PagedResult
+import land.ver.url.shortener.repositories.dtos.UrlResponse
 
 class UrlResponseMapper {
     fun map(pagedResult: PagedResult<UrlResponse>) = PagedApiResult(

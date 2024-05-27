@@ -9,6 +9,10 @@ import jakarta.transaction.Transactional
 import land.ver.url.shortener.models.QUrl
 import land.ver.url.shortener.models.QUrlVisit
 import land.ver.url.shortener.models.Url
+import land.ver.url.shortener.repositories.dtos.NewUrl
+import land.ver.url.shortener.repositories.dtos.PagedResult
+import land.ver.url.shortener.repositories.dtos.PaginationMetadata
+import land.ver.url.shortener.repositories.dtos.UrlResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
 import java.time.Clock

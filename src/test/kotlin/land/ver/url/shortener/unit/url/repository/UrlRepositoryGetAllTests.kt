@@ -4,7 +4,7 @@ import com.github.f4b6a3.uuid.UuidCreator
 import jakarta.persistence.EntityManager
 import land.ver.url.shortener.models.Url
 import land.ver.url.shortener.repositories.UrlRepository
-import land.ver.url.shortener.repositories.UrlResponse
+import land.ver.url.shortener.repositories.dtos.UrlResponse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test

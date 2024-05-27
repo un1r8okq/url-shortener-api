@@ -1,6 +1,6 @@
 package land.ver.url.shortener.controllers
 
-import land.ver.url.shortener.repositories.NewUrlVisit
+import land.ver.url.shortener.repositories.dtos.NewUrlVisit
 import land.ver.url.shortener.repositories.UrlRepository
 import land.ver.url.shortener.repositories.UrlVisitRepository
 import org.springframework.http.HttpHeaders

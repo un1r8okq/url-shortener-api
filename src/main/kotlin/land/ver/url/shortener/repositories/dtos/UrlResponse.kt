@@ -1,4 +1,4 @@
-package land.ver.url.shortener.repositories
+package land.ver.url.shortener.repositories.dtos
 
 import java.time.Instant
 import java.util.UUID

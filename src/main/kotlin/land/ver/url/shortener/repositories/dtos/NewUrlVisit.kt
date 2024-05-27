@@ -1,4 +1,4 @@
-package land.ver.url.shortener.repositories
+package land.ver.url.shortener.repositories.dtos
 
 import land.ver.url.shortener.models.Url
 import java.time.Instant

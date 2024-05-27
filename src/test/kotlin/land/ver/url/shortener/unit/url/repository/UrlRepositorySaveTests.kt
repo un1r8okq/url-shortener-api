@@ -1,6 +1,6 @@
 package land.ver.url.shortener.unit.url.repository
 
-import land.ver.url.shortener.repositories.NewUrl
+import land.ver.url.shortener.repositories.dtos.NewUrl
 import land.ver.url.shortener.repositories.UrlRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
