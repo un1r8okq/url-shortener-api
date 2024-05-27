@@ -6,8 +6,8 @@ import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.urls.ShortenUrlRequest
 import land.ver.url.shortener.dtos.urls.UrlResponseDTO
 import land.ver.url.shortener.mappers.UrlResponseMapper
-import land.ver.url.shortener.repositories.dtos.NewUrl
 import land.ver.url.shortener.repositories.UrlRepository
+import land.ver.url.shortener.repositories.dtos.NewUrl
 import land.ver.url.shortener.services.StubGeneratorService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
