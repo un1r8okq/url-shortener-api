@@ -1,9 +1,9 @@
-CREATE TABLE IF NOT EXISTS users (
-    id          UUID            NOT NULL,
-    email       VARCHAR(255)    NOT NULL,
-    name        VARCHAR(255)    NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE (email)
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id                          UUID            NOT NULL,
+    created_timestamp_utc       TIMESTAMP       NOT NULL,
+    log_type                    VARCHAR(255)    NOT NULL,
+    message                     VARCHAR(255)    NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS urls (
