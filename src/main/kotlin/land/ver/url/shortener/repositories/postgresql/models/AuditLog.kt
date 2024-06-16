@@ -1,4 +1,4 @@
-package land.ver.url.shortener.models
+package land.ver.url.shortener.repositories.postgresql.models
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

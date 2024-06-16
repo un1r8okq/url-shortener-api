@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.Instant
 
 @RestController
 @RequestMapping("/s")
@@ -33,10 +32,7 @@ class UrlRedirectController(
         }
 
         urlVisitRepository.save(
-            NewUrlVisit(
-                timestampUtc = Instant.now(),
-                url = url,
-            )
+            NewUrlVisit(url.id)
         )
         auditLogsRepository.save(
             NewAuditLog(LogType.URL_VISITED, "The URL $stub was visited.")

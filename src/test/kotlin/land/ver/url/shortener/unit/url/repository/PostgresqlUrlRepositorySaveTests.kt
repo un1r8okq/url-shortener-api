@@ -1,6 +1,6 @@
 package land.ver.url.shortener.unit.url.repository
 
-import land.ver.url.shortener.repositories.UrlRepository
+import land.ver.url.shortener.repositories.postgresql.PostgresqlUrlRepository
 import land.ver.url.shortener.repositories.dtos.NewUrl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -9,8 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 
-class UrlRepositorySaveTests(
-    @Autowired private val urlRepository: UrlRepository,
+class PostgresqlUrlRepositorySaveTests(
+    @Autowired private val postgreSqlUrlRepository: PostgresqlUrlRepository,
 ) : BaseRepositoryTest() {
     @Test
     fun testIdNotNull() {
@@ -19,7 +19,7 @@ class UrlRepositorySaveTests(
             stub = "",
         )
 
-        val result = urlRepository.save(newUrl)
+        val result = postgreSqlUrlRepository.save(newUrl)
 
         assertNotNull(result.id)
     }
@@ -38,7 +38,7 @@ class UrlRepositorySaveTests(
             stub = "",
         )
 
-        val result = urlRepository.save(newUrl)
+        val result = postgreSqlUrlRepository.save(newUrl)
 
         assertEquals(longUrl, result.longUrl)
     }
@@ -57,7 +57,7 @@ class UrlRepositorySaveTests(
             stub = stub,
         )
 
-        val result = urlRepository.save(newUrl)
+        val result = postgreSqlUrlRepository.save(newUrl)
 
         assertEquals(stub, result.stub)
     }

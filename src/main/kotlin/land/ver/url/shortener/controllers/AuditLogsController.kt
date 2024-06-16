@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/audit-logs")
 class AuditLogsController(
-    private val auditLogsRepository: AuditLogsRepository,
+    private val repository: AuditLogsRepository,
 ) {
     @GetMapping("", "/")
     fun index(@Valid @PositiveOrZero @RequestParam pageNumber: Long): PagedApiResult<AuditLogResponseDTO> {
-        val logs = auditLogsRepository.getAll(pageNumber)
+        val logs = repository.getAll(pageNumber)
 
         return AuditLogMapper().map(logs)
     }

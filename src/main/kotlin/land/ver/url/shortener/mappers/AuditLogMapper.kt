@@ -3,11 +3,11 @@ package land.ver.url.shortener.mappers
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.PaginationMetadata
 import land.ver.url.shortener.dtos.auditLogs.AuditLogResponseDTO
-import land.ver.url.shortener.models.AuditLog
+import land.ver.url.shortener.repositories.dtos.AuditLogResponse
 import land.ver.url.shortener.repositories.dtos.PagedResult
 
 class AuditLogMapper {
-    fun map(pagedResult: PagedResult<AuditLog>) = PagedApiResult(
+    fun map(pagedResult: PagedResult<AuditLogResponse>) = PagedApiResult(
         pagedResult.results.map { map(it) },
         PaginationMetadata(
             pageNumber = pagedResult.paginationMetadata.pageNumber,
@@ -16,7 +16,7 @@ class AuditLogMapper {
         ),
     )
 
-    fun map(log: AuditLog) = AuditLogResponseDTO(
+    fun map(log: AuditLogResponse) = AuditLogResponseDTO(
         id = log.id,
         createdTimestampUtc = log.createdTimestampUtc.toString(),
         logType = log.logType.strVal,
