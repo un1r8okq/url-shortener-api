@@ -4,7 +4,6 @@ import com.github.f4b6a3.uuid.UuidCreator
 import land.ver.url.shortener.repositories.UrlRepository
 import land.ver.url.shortener.repositories.dtos.NewUrl
 import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.dtos.UrlResponse
 import land.ver.url.shortener.repositories.memory.models.Url
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 import java.time.Clock
 import java.time.Instant
-import kotlin.math.ceil
 
 @Primary
 @Repository
@@ -43,34 +41,15 @@ class InMemoryUrlRepository(
     }
 
     override fun getAll(pageNumber: Long): PagedResult<UrlResponse> {
-        val count = urls.count()
-        val fromIndex = pageNumber.toInt() * pageSize
-        val results = if (fromIndex >= count) {
-            emptyList()
-        } else {
-            val toIndex = minOf(fromIndex + pageSize, count)
-
-            urls
-                .subList(fromIndex, toIndex)
-                .map {
-                    UrlResponse(
-                        id = it.id,
-                        longUrl = it.longUrl,
-                        stub = it.stub,
-                        createdTimestampUtc = it.createdTimestampUtc,
-                        lastVisitedTimestampUtc = null,
-                    )
-                }
+        return urls.getAllPaged(pageSize, pageNumber.toInt()) {
+            UrlResponse(
+                id = it.id,
+                longUrl = it.longUrl,
+                stub = it.stub,
+                createdTimestampUtc = it.createdTimestampUtc,
+                lastVisitedTimestampUtc = null,
+            )
         }
-
-        return PagedResult(
-            results = results,
-            paginationMetadata = PaginationMetadata(
-                pageNumber = pageNumber,
-                pageSize = pageSize.toLong(),
-                totalPages = ceil(count.toFloat() / pageSize).toLong(),
-            ),
-        )
     }
 
     override fun findByStub(stub: String): UrlResponse? {

@@ -29,43 +29,26 @@ class InMemoryAuditLogsRepository(
             message = newAuditLog.message,
         )
 
-        logs.add(AuditLog(
-            id = result.id,
-            createdTimestampUtc = result.createdTimestampUtc,
-            logType = result.logType,
-            message = result.message,
-        ))
+        logs.add(
+            AuditLog(
+                id = result.id,
+                createdTimestampUtc = result.createdTimestampUtc,
+                logType = result.logType,
+                message = result.message,
+            )
+        )
 
         return result
     }
 
     override fun getAll(pageNumber: Long): PagedResult<AuditLogResponse> {
-        val count = logs.count()
-        val fromIndex = pageNumber.toInt() * pageSize
-        val results = if (fromIndex >= count) {
-            emptyList()
-        } else {
-            val toIndex = minOf(fromIndex + pageSize, count)
-
-            logs
-                .subList(fromIndex, toIndex)
-                .map {
-                    AuditLogResponse(
-                        id = it.id,
-                        createdTimestampUtc = it.createdTimestampUtc,
-                        logType = it.logType,
-                        message = it.message,
-                    )
-                }
+        return logs.getAllPaged(pageSize, pageNumber.toInt()) {
+            AuditLogResponse(
+                id = it.id,
+                createdTimestampUtc = it.createdTimestampUtc,
+                logType = it.logType,
+                message = it.message,
+            )
         }
-
-        return PagedResult(
-            results = results,
-            paginationMetadata = PaginationMetadata(
-                pageNumber = pageNumber,
-                pageSize = pageSize.toLong(),
-                totalPages = ceil(count.toFloat() / pageSize).toLong(),
-            ),
-        )
     }
 }

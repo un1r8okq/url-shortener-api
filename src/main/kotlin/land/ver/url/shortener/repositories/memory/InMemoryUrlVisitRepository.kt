@@ -5,14 +5,12 @@ import jakarta.transaction.Transactional
 import land.ver.url.shortener.repositories.UrlVisitRepository
 import land.ver.url.shortener.repositories.dtos.NewUrlVisit
 import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.dtos.UrlVisitResponse
 import land.ver.url.shortener.repositories.memory.models.UrlVisit
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 import java.time.Instant
-import kotlin.math.ceil
 
 @Primary
 @Repository
@@ -40,31 +38,12 @@ class InMemoryUrlVisitRepository(
     }
 
     override fun getAll(pageNumber: Long): PagedResult<UrlVisitResponse> {
-        val count = urlVisits.count()
-        val fromIndex = pageNumber.toInt() * pageSize
-        val results = if (fromIndex >= count) {
-            emptyList()
-        } else {
-            val toIndex = minOf(fromIndex + pageSize, count)
-
-            urlVisits
-                .subList(fromIndex, toIndex)
-                .map {
-                    UrlVisitResponse(
-                        id = it.id,
-                        urlId = it.urlId,
-                        timestampUtc = it.timestampUtc,
-                    )
-                }
+        return urlVisits.getAllPaged(pageSize, pageNumber.toInt()) {
+            UrlVisitResponse(
+                id = it.id,
+                urlId = it.urlId,
+                timestampUtc = it.timestampUtc,
+            )
         }
-
-        return PagedResult(
-            results = results,
-            paginationMetadata = PaginationMetadata(
-                pageNumber = pageNumber,
-                pageSize = pageSize.toLong(),
-                totalPages = ceil(count.toFloat() / pageSize).toLong(),
-            ),
-        )
     }
 }
