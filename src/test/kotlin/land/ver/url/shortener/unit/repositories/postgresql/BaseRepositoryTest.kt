@@ -1,4 +1,4 @@
-package land.ver.url.shortener.unit.url.repository
+package land.ver.url.shortener.unit.repositories.postgresql
 
 import jakarta.transaction.Transactional
 import org.springframework.boot.test.context.SpringBootTest

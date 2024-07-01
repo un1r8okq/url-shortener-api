@@ -1,4 +1,4 @@
-package land.ver.url.shortener.unit.url.repository
+package land.ver.url.shortener.unit.repositories.postgresql
 
 import land.ver.url.shortener.repositories.dtos.NewUrl
 import land.ver.url.shortener.repositories.postgresql.PostgresqlUrlRepository

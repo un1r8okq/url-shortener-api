@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/audit-logs")
-class AuditLogsController(
-    private val repository: AuditLogsRepository,
-) {
+class AuditLogsController(private val repository: AuditLogsRepository) {
     @GetMapping("", "/")
     fun index(@Valid @PositiveOrZero @RequestParam pageNumber: Long): PagedApiResult<AuditLogResponseDTO> {
         val logs = repository.getAll(pageNumber)
