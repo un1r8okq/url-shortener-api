@@ -11,7 +11,7 @@ import land.ver.url.shortener.repositories.AuditLogsRepository
 import land.ver.url.shortener.repositories.UrlRepository
 import land.ver.url.shortener.repositories.dtos.NewAuditLog
 import land.ver.url.shortener.repositories.dtos.NewUrl
-import land.ver.url.shortener.services.StubGeneratorService
+import land.ver.url.shortener.services.UrlStubGenerator
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 class UrlController(
     private val urlRepository: UrlRepository,
     private val auditLogsRepository: AuditLogsRepository,
-    private val stubGenerator: StubGeneratorService,
+    private val stubGenerator: UrlStubGenerator,
 ) {
     @GetMapping("", "/")
     fun index(@Valid @PositiveOrZero @RequestParam pageNumber: Long): PagedApiResult<UrlResponseDTO> {

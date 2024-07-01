@@ -16,7 +16,7 @@ class ShortenUrlRequestTest {
     }
 
     @Test
-    fun testEmptyUrl() {
+    fun `when the URL is empty, the correct violation is returned`() {
         val dto = ShortenUrlRequest("")
 
         val violations = validator.validate(dto)
@@ -26,7 +26,7 @@ class ShortenUrlRequestTest {
     }
 
     @Test
-    fun testNonUrl() {
+    fun `when the URL is not a URL, the correct violation is returned`() {
         val dto = ShortenUrlRequest("not a URL")
 
         val violations = validator.validate(dto)

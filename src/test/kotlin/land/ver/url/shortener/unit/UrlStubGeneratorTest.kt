@@ -3,17 +3,17 @@ package land.ver.url.shortener.unit
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import land.ver.url.shortener.services.RandomNumberService
-import land.ver.url.shortener.services.StubGeneratorService
+import land.ver.url.shortener.services.RandomNumberSource
+import land.ver.url.shortener.services.UrlStubGenerator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class StubGeneratorTest {
+class UrlStubGeneratorTest {
     @Test
-    fun testResultLength() {
-        val rand = mockk<RandomNumberService>()
+    fun `the stub is of the correct length`() {
+        val rand = mockk<RandomNumberSource>()
         every { rand.getRandomNumber(any(), any()) } returns 0
-        val service = StubGeneratorService(rand)
+        val service = UrlStubGenerator(rand)
 
         val result = service.generate()
 
@@ -21,10 +21,10 @@ class StubGeneratorTest {
     }
 
     @Test
-    fun testRandomCalledCorrectly() {
-        val rand = mockk<RandomNumberService>()
+    fun `the random number source is called correctly`() {
+        val rand = mockk<RandomNumberSource>()
         every { rand.getRandomNumber(any(), any()) } returns 0
-        val service = StubGeneratorService(rand)
+        val service = UrlStubGenerator(rand)
 
         service.generate()
 
@@ -32,10 +32,10 @@ class StubGeneratorTest {
     }
 
     @Test
-    fun testStartOfAlphabet() {
-        val rand = mockk<RandomNumberService>()
+    fun `when the random number provider always returns 0, the generated stub is 'aaaa'`() {
+        val rand = mockk<RandomNumberSource>()
         every { rand.getRandomNumber(any(), any()) } returns 0
-        val service = StubGeneratorService(rand)
+        val service = UrlStubGenerator(rand)
 
         val result = service.generate()
 
@@ -43,10 +43,10 @@ class StubGeneratorTest {
     }
 
     @Test
-    fun testEndOfAlphabet() {
-        val rand = mockk<RandomNumberService>()
+    fun `when the random number provider always returns 63, the generated stub is '____'`() {
+        val rand = mockk<RandomNumberSource>()
         every { rand.getRandomNumber(any(), any()) } returns 63
-        val service = StubGeneratorService(rand)
+        val service = UrlStubGenerator(rand)
 
         val result = service.generate()
 
@@ -54,10 +54,10 @@ class StubGeneratorTest {
     }
 
     @Test
-    fun testMix() {
-        val rand = mockk<RandomNumberService>()
+    fun `when the random number provider returns '2, 3, 5, 7', the generated stub is 'cdfh'`() {
+        val rand = mockk<RandomNumberSource>()
         every { rand.getRandomNumber(any(), any()) } returnsMany listOf(2, 3, 5, 7)
-        val service = StubGeneratorService(rand)
+        val service = UrlStubGenerator(rand)
 
         val result = service.generate()
 
