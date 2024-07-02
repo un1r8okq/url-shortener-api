@@ -6,13 +6,11 @@ import land.ver.url.shortener.repositories.AuditLogsRepository
 import land.ver.url.shortener.repositories.dtos.AuditLogResponse
 import land.ver.url.shortener.repositories.dtos.NewAuditLog
 import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.memory.models.AuditLog
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 import java.time.Instant
-import kotlin.math.ceil
 
 @Primary
 @Repository
