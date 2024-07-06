@@ -2,45 +2,42 @@ package land.ver.url.shortener
 
 import land.ver.url.shortener.exceptions.base.BadRequestException
 import land.ver.url.shortener.exceptions.base.NotFoundException
-import org.springframework.http.HttpHeaders
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.context.request.WebRequest
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.util.HashMap
+import org.springframework.web.method.annotation.HandlerMethodValidationException
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @ControllerAdvice
-class ApiExceptionHandler : ResponseEntityExceptionHandler() {
-    override fun handleMethodArgumentNotValid(
-        ex: MethodArgumentNotValidException,
-        headers: HttpHeaders,
-        status: HttpStatusCode,
-        request: WebRequest
-    ): ResponseEntity<Any>? {
-        val errors = HashMap<String, String>()
+class ApiExceptionHandler {
+    private val defaultValidationError = "Validation error"
+    private val logger = LoggerFactory.getLogger(ApiExceptionHandler::class.java)
 
-        for (error in ex.bindingResult.fieldErrors) {
-            errors[error.field] = error.defaultMessage ?: "Unknown"
-        }
+    @ExceptionHandler(HandlerMethodValidationException::class)
+    fun methodValidationHandler(ex: HandlerMethodValidationException): ProblemDetail {
+        val detail = ex.valueResults.firstOrNull()?.resolvableErrors?.firstOrNull()?.defaultMessage
 
-        for (error in ex.bindingResult.globalErrors) {
-            errors[error.objectName] = error.defaultMessage ?: "Unknown"
-        }
-
-        val problemDetail = ProblemDetail.forStatusAndDetail(
-            HttpStatus.BAD_REQUEST,
-            "One or more of your request parameters were invalid."
-        )
-
-        problemDetail.setProperty("invalidParameters", errors)
-
-        return ResponseEntity(problemDetail, HttpStatus.BAD_REQUEST)
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail ?: defaultValidationError)
     }
+
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    fun missingRequestParamHandler(ex: MissingServletRequestParameterException): ProblemDetail {
+        val detail = ex.body.detail
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail ?: defaultValidationError)
+    }
+
+    /**
+     * Catch routes with no matching controller
+     */
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun noResourceFoundHandler() = ProblemDetail.forStatus(HttpStatus.NOT_FOUND)
 
     @ExceptionHandler(NotFoundException::class)
     fun userNotFoundHandler(ex: NotFoundException) =
@@ -58,7 +55,7 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(Exception::class)
     fun handleAll(ex: Exception): ResponseEntity<Any> {
-        logger.error("Uncaught exception: $ex")
+        logger.error(ex.message)
         return ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }

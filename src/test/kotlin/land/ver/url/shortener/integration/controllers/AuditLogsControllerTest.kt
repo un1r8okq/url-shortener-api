@@ -10,6 +10,8 @@ import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -120,6 +122,31 @@ class AuditLogsControllerTest {
                             title: "Bad Request",
                             status: 400,
                             detail: "Required parameter 'pageNumber' is not present.",
+                            instance: "/api/v1/audit-logs"
+                        }
+                    """.trimIndent(),
+                    true
+                )
+            )
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = [-1, 0])
+    fun `when the pageNumber parameter is not positive, a validation error is returned`(pageNumber: Long) {
+        val request = get("/api/v1/audit-logs?pageNumber=$pageNumber").contentType(MediaType.APPLICATION_JSON)
+
+        mvc
+            .perform(request)
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(
+                content().json(
+                    """
+                       {
+                            type: "about:blank",
+                            title: "Bad Request",
+                            status: 400,
+                            detail: "The pageNumber query parameter must be a positive integer.",
                             instance: "/api/v1/audit-logs"
                         }
                     """.trimIndent(),
