@@ -1,4 +1,4 @@
-package land.ver.url.shortener.unit.repositories.postgresql
+package land.ver.url.shortener.integration.repositories.postgresql
 
 import com.github.f4b6a3.uuid.UuidCreator
 import jakarta.persistence.EntityManager

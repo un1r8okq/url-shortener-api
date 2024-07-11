@@ -5,7 +5,6 @@ import land.ver.url.shortener.repositories.AuditLogsRepository
 import land.ver.url.shortener.repositories.UrlRepository
 import land.ver.url.shortener.repositories.UrlVisitRepository
 import land.ver.url.shortener.repositories.dtos.NewAuditLog
-import land.ver.url.shortener.repositories.dtos.NewUrlVisit
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/s")
 class UrlRedirectController(
+    private val auditLogsRepository: AuditLogsRepository,
     private val urlRepository: UrlRepository,
     private val urlVisitRepository: UrlVisitRepository,
-    private val auditLogsRepository: AuditLogsRepository,
 ) {
     @GetMapping("/{stub}")
     @Transactional
@@ -31,16 +30,14 @@ class UrlRedirectController(
             return ResponseEntity(HttpStatus.NOT_FOUND)
         }
 
-        urlVisitRepository.save(
-            NewUrlVisit(url.id)
-        )
+        urlVisitRepository.save(url.id)
         auditLogsRepository.save(
             NewAuditLog(LogType.URL_VISITED, "The URL $stub was visited.")
         )
 
-        val headers = HttpHeaders()
-        headers.add("Location", url.longUrl)
-
-        return ResponseEntity(headers, HttpStatus.FOUND)
+        return ResponseEntity
+            .status(HttpStatus.FOUND)
+            .header(HttpHeaders.LOCATION, url.longUrl)
+            .build()
     }
 }

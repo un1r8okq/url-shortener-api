@@ -6,8 +6,11 @@ import land.ver.url.shortener.dtos.PaginationMetadata
 import land.ver.url.shortener.dtos.urls.UrlResponseDTO
 import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.dtos.UrlResponse
+import org.springframework.core.env.Environment
+import org.springframework.stereotype.Component
 
-class UrlResponseMapper {
+@Component
+class UrlResponseMapper(private val environment: Environment) {
     fun map(pagedResult: PagedResult<UrlResponse>) = PagedApiResult(
         pagedResult.results.map { map(it) },
         PaginationMetadata(
@@ -19,7 +22,7 @@ class UrlResponseMapper {
 
     fun map(url: UrlResponse) = UrlResponseDTO(
         longUrl = url.longUrl,
-        shortenedUrl = System.getenv("SERVER_BASE_URL") + SHORT_URL_PATH_PREFIX + url.stub,
+        shortenedUrl = environment.getProperty("server.base_url") + SHORT_URL_PATH_PREFIX + url.stub,
         createdTimestampUtc = url.createdTimestampUtc.toString(),
         lastVisitTimestampUtc = url.lastVisitedTimestampUtc?.toString(),
     )

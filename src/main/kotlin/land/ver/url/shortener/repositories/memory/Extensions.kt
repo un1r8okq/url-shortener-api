@@ -6,7 +6,7 @@ import kotlin.math.ceil
 
 fun <T, E> List<T>.getAllPaged(pageSize: Int, pageNumber: Int, mapper: (input: T) -> E): PagedResult<E> {
     val count = count()
-    val fromIndex = pageNumber * pageSize
+    val fromIndex = (pageNumber - 1) * pageSize
     val results = if (fromIndex >= count) {
         emptyList()
     } else {

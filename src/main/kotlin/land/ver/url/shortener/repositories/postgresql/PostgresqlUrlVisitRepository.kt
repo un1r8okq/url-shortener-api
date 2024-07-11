@@ -7,7 +7,6 @@ import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.transaction.Transactional
 import land.ver.url.shortener.repositories.UrlVisitRepository
-import land.ver.url.shortener.repositories.dtos.NewUrlVisit
 import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.dtos.UrlVisitResponse
@@ -15,6 +14,7 @@ import land.ver.url.shortener.repositories.postgresql.models.QUrlVisit
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
 import java.time.Instant
+import java.util.UUID
 import kotlin.math.ceil
 
 @Repository
@@ -23,13 +23,13 @@ class PostgresqlUrlVisitRepository(
     @Value("\${pageSize}") private val pageSize: Long,
 ) : UrlVisitRepository {
     @Transactional
-    override fun save(newVisit: NewUrlVisit): UrlVisitResponse {
+    override fun save(urlId: UUID): UrlVisitResponse {
         val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
 
         val result = UrlVisitResponse(
             id = UuidCreator.getTimeOrderedEpoch(),
             timestampUtc = Instant.now(),
-            urlId = newVisit.urlId,
+            urlId = urlId,
         )
 
         queryFactory

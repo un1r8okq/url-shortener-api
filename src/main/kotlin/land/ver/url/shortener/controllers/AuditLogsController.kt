@@ -18,7 +18,7 @@ class AuditLogsController(private val repository: AuditLogsRepository) {
     fun index(
         @Valid
         @RequestParam
-        @Positive(message = "The pageNumber query parameter must be a positive integer.")
+        @Positive(message = PAGE_NUM_MUST_BE_POSITIVE)
         pageNumber: Long,
     ): PagedApiResult<AuditLogResponseDTO> {
         val logs = repository.getAll(pageNumber)

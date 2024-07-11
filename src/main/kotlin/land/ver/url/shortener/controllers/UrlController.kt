@@ -1,6 +1,7 @@
 package land.ver.url.shortener.controllers
 
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.PositiveOrZero
 import land.ver.url.shortener.LogType
 import land.ver.url.shortener.dtos.PagedApiResult
@@ -25,15 +26,21 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/urls")
 class UrlController(
-    private val urlRepository: UrlRepository,
     private val auditLogsRepository: AuditLogsRepository,
+    private val urlRepository: UrlRepository,
+    private val responseMapper: UrlResponseMapper,
     private val stubGenerator: UrlStubGenerator,
 ) {
     @GetMapping("", "/")
-    fun index(@Valid @PositiveOrZero @RequestParam pageNumber: Long): PagedApiResult<UrlResponseDTO> {
+    fun index(
+        @Valid
+        @RequestParam
+        @Positive(message = PAGE_NUM_MUST_BE_POSITIVE)
+        pageNumber: Long
+    ): PagedApiResult<UrlResponseDTO> {
         val urls = urlRepository.getAll(pageNumber)
 
-        return UrlResponseMapper().map(urls)
+        return responseMapper.map(urls)
     }
 
     @PostMapping("")
@@ -51,7 +58,7 @@ class UrlController(
             ),
         )
 
-        return ResponseEntity(UrlResponseMapper().map(url), HttpStatus.CREATED)
+        return ResponseEntity(responseMapper.map(url), HttpStatus.CREATED)
     }
 
     private fun limitStrLen(input: String): String {
