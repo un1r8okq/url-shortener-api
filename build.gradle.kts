@@ -29,6 +29,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("com.github.f4b6a3:uuid-creator:5.3.3")
     implementation("org.hibernate.orm:hibernate-core")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -44,6 +46,7 @@ dependencies {
     }
     testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("com.querydsl:querydsl-apt")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 kapt {
