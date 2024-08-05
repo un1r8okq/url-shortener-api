@@ -7,13 +7,13 @@ import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.dtos.UrlResponse
 import land.ver.url.shortener.repositories.memory.models.Url
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Repository
 import java.time.Clock
 import java.time.Instant
 
-@Primary
 @Repository
+@Profile("in-memory")
 class InMemoryUrlRepository(
     private val urls: MutableList<Url>,
     @Value("\${pageSize}") private val pageSize: Int,

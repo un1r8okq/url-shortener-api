@@ -8,12 +8,12 @@ import land.ver.url.shortener.repositories.dtos.NewAuditLog
 import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.memory.models.AuditLog
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Repository
 import java.time.Instant
 
-@Primary
 @Repository
+@Profile("in-memory")
 class InMemoryAuditLogsRepository(
     private val logs: MutableList<AuditLog>,
     @Value("\${pageSize}") private val pageSize: Int,

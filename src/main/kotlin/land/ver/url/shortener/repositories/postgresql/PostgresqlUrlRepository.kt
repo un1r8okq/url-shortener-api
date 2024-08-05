@@ -14,12 +14,14 @@ import land.ver.url.shortener.repositories.dtos.UrlResponse
 import land.ver.url.shortener.repositories.postgresql.models.QUrl
 import land.ver.url.shortener.repositories.postgresql.models.QUrlVisit
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Repository
 import java.time.Clock
 import java.time.Instant
 import kotlin.math.ceil
 
 @Repository
+@Profile("postgresql")
 class PostgresqlUrlRepository(
     @PersistenceContext private val entityManager: EntityManager,
     @Value("\${pageSize}") private val pageSize: Long,
