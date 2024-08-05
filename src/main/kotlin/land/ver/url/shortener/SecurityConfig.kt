@@ -1,5 +1,6 @@
 package land.ver.url.shortener
 
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -17,5 +18,11 @@ class SecurityConfig {
                     .anyRequest().authenticated()
             }
             .oauth2Login {}
+            .exceptionHandling { exceptionHandling ->
+                exceptionHandling.authenticationEntryPoint { request, response, authException ->
+                    // Return Forbidden instead of redirecting to OAuth login for unauthenticated sessions
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN)
+                }
+            }
             .build()
 }
