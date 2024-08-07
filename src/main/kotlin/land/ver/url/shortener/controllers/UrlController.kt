@@ -31,7 +31,7 @@ class UrlController(
     private val responseMapper: UrlResponseMapper,
     private val stubGenerator: UrlStubGenerator,
 ) {
-    @GetMapping("", "/")
+    @GetMapping
     fun index(
         @Valid
         @RequestParam
@@ -43,7 +43,7 @@ class UrlController(
         return responseMapper.map(urls)
     }
 
-    @PostMapping("")
+    @PostMapping
     @Transactional
     fun create(@Valid @RequestBody shortenUrlRequest: ShortenUrlRequest): ResponseEntity<UrlResponseDTO> {
         val newUrl = NewUrl(
