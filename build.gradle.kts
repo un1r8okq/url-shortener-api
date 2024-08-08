@@ -31,6 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.session:spring-session-jdbc")
     implementation("com.github.f4b6a3:uuid-creator:5.3.3")
     implementation("org.hibernate.orm:hibernate-core")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
