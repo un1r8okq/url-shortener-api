@@ -14,13 +14,13 @@ import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.postgresql.models.QAuditLog
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Profile
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 import java.time.Instant
 import kotlin.math.ceil
 
 @Repository
-@Profile("postgresql")
+@Primary
 class PostgresqlAuditLogsRepository(
     @PersistenceContext private val entityManager: EntityManager,
     @Value("\${pageSize}") private val pageSize: Long,
@@ -69,8 +69,8 @@ class PostgresqlAuditLogsRepository(
 
         val results = queryFactory
             .selectFrom(QAuditLog.auditLog)
-            .orderBy(QAuditLog.auditLog.id.asc())
-            .offset(pageNumber * pageSize)
+            .orderBy(QAuditLog.auditLog.id.desc())
+            .offset((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .fetch()
 

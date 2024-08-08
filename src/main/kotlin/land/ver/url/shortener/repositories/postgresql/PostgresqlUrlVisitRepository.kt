@@ -6,20 +6,21 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.transaction.Transactional
+import land.ver.url.shortener.exceptions.InvalidPageNumberException
 import land.ver.url.shortener.repositories.UrlVisitRepository
 import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.dtos.UrlVisitResponse
 import land.ver.url.shortener.repositories.postgresql.models.QUrlVisit
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Profile
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
 import java.time.Instant
 import java.util.UUID
 import kotlin.math.ceil
 
 @Repository
-@Profile("postgresql")
+@Primary
 class PostgresqlUrlVisitRepository(
     @PersistenceContext private val entityManager: EntityManager,
     @Value("\${pageSize}") private val pageSize: Long,
@@ -52,6 +53,9 @@ class PostgresqlUrlVisitRepository(
     }
 
     override fun getAll(pageNumber: Long): PagedResult<UrlVisitResponse> {
+        if (pageNumber < 1) {
+            throw InvalidPageNumberException(pageNumber)
+        }
         val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
 
         val count = queryFactory
@@ -62,7 +66,7 @@ class PostgresqlUrlVisitRepository(
         val results = queryFactory
             .selectFrom(QUrlVisit.urlVisit)
             .orderBy(QUrlVisit.urlVisit.id.asc())
-            .offset(pageNumber * pageSize)
+            .offset((pageNumber - 1) * pageSize)
             .limit(pageSize)
             .fetch()
             .map {
