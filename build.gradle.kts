@@ -1,5 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.com.google.common.io.Files
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.file.StandardCopyOption
 
 plugins {
     val kotlinVersion = "1.9.22"

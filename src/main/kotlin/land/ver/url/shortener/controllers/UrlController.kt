@@ -54,7 +54,9 @@ class UrlController(
         auditLogsRepository.save(
             NewAuditLog(
                 LogType.URL_SHORTENED,
-                "A short URL with the ID ${url.id}, stub ${url.stub}, and long URL ${limitStrLen(url.longUrl)} was created.",
+                "A short URL with the ID ${url.id}, " +
+                    "stub ${url.stub}, " +
+                    "and long URL ${limitStrLen(url.longUrl)} was created.",
             ),
         )
 
@@ -62,12 +64,15 @@ class UrlController(
     }
 
     private fun limitStrLen(input: String): String {
+        @Suppress("MagicNumber")
         val maxLen = 32
+        @Suppress("MagicNumber")
+        val ellipsisLen = 3
 
         if (input.length <= maxLen) {
             return input
         }
 
-        return input.take(maxLen - 3).plus("...")
+        return input.take(maxLen - ellipsisLen).plus("...")
     }
 }

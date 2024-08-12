@@ -37,6 +37,7 @@ class UrlControllerTest {
     private lateinit var mvc: MockMvc
 
     @MockkBean
+    @Suppress("UnusedPrivateProperty")
     private lateinit var auditLogsRepository: AuditLogsRepository
 
     @MockkBean
@@ -46,6 +47,7 @@ class UrlControllerTest {
     private lateinit var urlResponseMapper: UrlResponseMapper
 
     @MockkBean
+    @Suppress("UnusedPrivateProperty")
     private lateinit var stubGenerator: UrlStubGenerator
 
     @Test

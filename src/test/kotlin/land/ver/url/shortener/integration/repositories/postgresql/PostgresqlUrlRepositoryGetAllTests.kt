@@ -21,20 +21,20 @@ class PostgresqlUrlRepositoryGetAllTests(
 
     @Test
     fun `when there is no data, the results list is empty`() {
-        val result = repository.getAll(0)
+        val result = repository.getAll(1)
 
         assertEquals(0, result.results.count())
     }
 
     @Test
     fun `when there is no data, the page size matches`() {
-        val result = repository.getAll(0)
+        val result = repository.getAll(1)
 
         assertEquals(pageSize, result.paginationMetadata.pageSize)
     }
 
     @ParameterizedTest
-    @ValueSource(longs = [0L, 1L, 1_000_000_000L])
+    @ValueSource(longs = [1L, 2L, 1_000_000_000L])
     fun `when there is no data, the page number matches`(pageNumber: Long) {
         val result = repository.getAll(pageNumber)
 
@@ -43,7 +43,7 @@ class PostgresqlUrlRepositoryGetAllTests(
 
     @Test
     fun `when there is no data, the total number of pages matches`() {
-        val result = repository.getAll(0)
+        val result = repository.getAll(1)
 
         assertEquals(0, result.paginationMetadata.totalPages)
     }
@@ -54,7 +54,7 @@ class PostgresqlUrlRepositoryGetAllTests(
         urls.forEach { entityManager.persist(it) }
         entityManager.flush()
 
-        val result = repository.getAll(0)
+        val result = repository.getAll(1)
 
         assertEquals(1, result.results.count())
         assertUrlsEqual(urls[0], result.results[0])
@@ -66,7 +66,7 @@ class PostgresqlUrlRepositoryGetAllTests(
         urls.forEach { entityManager.persist(it) }
         entityManager.flush()
 
-        val result = repository.getAll(0)
+        val result = repository.getAll(1)
 
         assertEquals(3, result.paginationMetadata.totalPages)
     }

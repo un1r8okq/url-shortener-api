@@ -31,9 +31,11 @@ class UrlRedirectControllerTest {
     private lateinit var urlRepo: UrlRepository
 
     @MockkBean
+    @Suppress("UnusedPrivateProperty")
     private lateinit var urlVisitRepo: UrlVisitRepository
 
     @MockkBean
+    @Suppress("UnusedPrivateProperty")
     private lateinit var auditLogsRepo: AuditLogsRepository
 
     @MockkBean
