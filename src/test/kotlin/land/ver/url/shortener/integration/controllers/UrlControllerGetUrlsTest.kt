@@ -32,7 +32,7 @@ import java.util.UUID
 @WithMockUser
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(UrlController::class)
-class UrlControllerTest {
+class UrlControllerGetUrlsTest {
     @Autowired
     private lateinit var mvc: MockMvc
 

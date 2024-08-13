@@ -2,7 +2,6 @@ package land.ver.url.shortener.controllers
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
-import jakarta.validation.constraints.PositiveOrZero
 import land.ver.url.shortener.LogType
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.urls.ShortenUrlRequest
@@ -66,6 +65,7 @@ class UrlController(
     private fun limitStrLen(input: String): String {
         @Suppress("MagicNumber")
         val maxLen = 32
+
         @Suppress("MagicNumber")
         val ellipsisLen = 3
 
