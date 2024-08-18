@@ -3,8 +3,8 @@ package land.ver.url.shortener.mappers
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.PaginationMetadata
 import land.ver.url.shortener.dtos.auditLogs.AuditLogResponseDTO
-import land.ver.url.shortener.repositories.dtos.AuditLogResponse
-import land.ver.url.shortener.repositories.dtos.PagedResult
+import land.ver.url.shortener.models.AuditLogResponse
+import land.ver.url.shortener.models.PagedResult
 
 class AuditLogMapper {
     fun map(pagedResult: PagedResult<AuditLogResponse>) = PagedApiResult(

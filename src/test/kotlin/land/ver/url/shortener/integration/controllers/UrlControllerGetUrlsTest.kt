@@ -6,12 +6,11 @@ import land.ver.url.shortener.controllers.UrlController
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.urls.UrlResponseDTO
 import land.ver.url.shortener.mappers.UrlResponseMapper
-import land.ver.url.shortener.repositories.AuditLogsRepository
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.PaginationMetadata
+import land.ver.url.shortener.models.UrlResponse
 import land.ver.url.shortener.repositories.UrlRepository
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
-import land.ver.url.shortener.repositories.dtos.UrlResponse
-import land.ver.url.shortener.services.UrlStubGenerator
+import land.ver.url.shortener.services.ShortUrlCreator
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
@@ -38,17 +37,13 @@ class UrlControllerGetUrlsTest {
 
     @MockkBean
     @Suppress("UnusedPrivateProperty")
-    private lateinit var auditLogsRepository: AuditLogsRepository
+    private lateinit var urlCreator: ShortUrlCreator
 
     @MockkBean
     private lateinit var urlRepository: UrlRepository
 
     @MockkBean
     private lateinit var urlResponseMapper: UrlResponseMapper
-
-    @MockkBean
-    @Suppress("UnusedPrivateProperty")
-    private lateinit var stubGenerator: UrlStubGenerator
 
     @Test
     fun `when there are no URLs, the response is correct`() {

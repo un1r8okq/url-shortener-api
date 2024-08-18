@@ -2,10 +2,10 @@ package land.ver.url.shortener.repositories.memory
 
 import com.github.f4b6a3.uuid.UuidCreator
 import jakarta.transaction.Transactional
+import land.ver.url.shortener.models.AuditLogResponse
+import land.ver.url.shortener.models.NewAuditLog
+import land.ver.url.shortener.models.PagedResult
 import land.ver.url.shortener.repositories.AuditLogsRepository
-import land.ver.url.shortener.repositories.dtos.AuditLogResponse
-import land.ver.url.shortener.repositories.dtos.NewAuditLog
-import land.ver.url.shortener.repositories.dtos.PagedResult
 import land.ver.url.shortener.repositories.memory.models.AuditLog
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Profile

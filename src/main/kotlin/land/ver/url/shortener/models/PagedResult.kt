@@ -1,4 +1,4 @@
-package land.ver.url.shortener.repositories.dtos
+package land.ver.url.shortener.models
 
 data class PagedResult<T>(
     val results: List<T>,

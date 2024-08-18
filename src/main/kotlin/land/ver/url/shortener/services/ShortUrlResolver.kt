@@ -1,10 +1,10 @@
 package land.ver.url.shortener.services
 
 import land.ver.url.shortener.LogType
+import land.ver.url.shortener.models.NewAuditLog
 import land.ver.url.shortener.repositories.AuditLogsRepository
 import land.ver.url.shortener.repositories.UrlRepository
 import land.ver.url.shortener.repositories.UrlVisitRepository
-import land.ver.url.shortener.repositories.dtos.NewAuditLog
 
 class ShortUrlResolver(
     private val urlRepository: UrlRepository,

@@ -1,9 +1,9 @@
 package land.ver.url.shortener.repositories
 
 import jakarta.transaction.Transactional
-import land.ver.url.shortener.repositories.dtos.AuditLogResponse
-import land.ver.url.shortener.repositories.dtos.NewAuditLog
-import land.ver.url.shortener.repositories.dtos.PagedResult
+import land.ver.url.shortener.models.AuditLogResponse
+import land.ver.url.shortener.models.NewAuditLog
+import land.ver.url.shortener.models.PagedResult
 
 interface AuditLogsRepository {
     @Transactional

@@ -1,9 +1,9 @@
 package land.ver.url.shortener.repositories
 
 import jakarta.transaction.Transactional
-import land.ver.url.shortener.repositories.dtos.NewUrl
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.UrlResponse
+import land.ver.url.shortener.models.NewUrl
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.UrlResponse
 
 interface UrlRepository {
     @Transactional

@@ -7,13 +7,13 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import land.ver.url.shortener.LogType
+import land.ver.url.shortener.models.AuditLogResponse
+import land.ver.url.shortener.models.NewAuditLog
+import land.ver.url.shortener.models.UrlResponse
+import land.ver.url.shortener.models.UrlVisitResponse
 import land.ver.url.shortener.repositories.AuditLogsRepository
 import land.ver.url.shortener.repositories.UrlRepository
 import land.ver.url.shortener.repositories.UrlVisitRepository
-import land.ver.url.shortener.repositories.dtos.AuditLogResponse
-import land.ver.url.shortener.repositories.dtos.NewAuditLog
-import land.ver.url.shortener.repositories.dtos.UrlResponse
-import land.ver.url.shortener.repositories.dtos.UrlVisitResponse
 import land.ver.url.shortener.services.ShortUrlResolver
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach

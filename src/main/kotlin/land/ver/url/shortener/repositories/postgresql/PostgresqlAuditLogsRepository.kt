@@ -7,11 +7,11 @@ import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.transaction.Transactional
 import land.ver.url.shortener.exceptions.InvalidPageNumberException
+import land.ver.url.shortener.models.AuditLogResponse
+import land.ver.url.shortener.models.NewAuditLog
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.PaginationMetadata
 import land.ver.url.shortener.repositories.AuditLogsRepository
-import land.ver.url.shortener.repositories.dtos.AuditLogResponse
-import land.ver.url.shortener.repositories.dtos.NewAuditLog
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import land.ver.url.shortener.repositories.postgresql.models.QAuditLog
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Primary

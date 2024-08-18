@@ -4,8 +4,8 @@ import land.ver.url.shortener.SHORT_URL_PATH_PREFIX
 import land.ver.url.shortener.dtos.PagedApiResult
 import land.ver.url.shortener.dtos.PaginationMetadata
 import land.ver.url.shortener.dtos.urls.UrlResponseDTO
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.UrlResponse
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.UrlResponse
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 

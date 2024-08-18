@@ -1,7 +1,7 @@
 package land.ver.url.shortener.repositories.memory
 
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.PaginationMetadata
 import kotlin.math.ceil
 
 fun <T, E> List<T>.getAllPaged(pageSize: Int, pageNumber: Int, mapper: (input: T) -> E): PagedResult<E> {

@@ -4,10 +4,10 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import land.ver.url.shortener.LogType
 import land.ver.url.shortener.controllers.AuditLogsController
+import land.ver.url.shortener.models.AuditLogResponse
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.PaginationMetadata
 import land.ver.url.shortener.repositories.AuditLogsRepository
-import land.ver.url.shortener.repositories.dtos.AuditLogResponse
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.PaginationMetadata
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest

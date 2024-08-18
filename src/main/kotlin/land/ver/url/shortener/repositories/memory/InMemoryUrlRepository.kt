@@ -1,10 +1,10 @@
 package land.ver.url.shortener.repositories.memory
 
 import com.github.f4b6a3.uuid.UuidCreator
+import land.ver.url.shortener.models.NewUrl
+import land.ver.url.shortener.models.PagedResult
+import land.ver.url.shortener.models.UrlResponse
 import land.ver.url.shortener.repositories.UrlRepository
-import land.ver.url.shortener.repositories.dtos.NewUrl
-import land.ver.url.shortener.repositories.dtos.PagedResult
-import land.ver.url.shortener.repositories.dtos.UrlResponse
 import land.ver.url.shortener.repositories.memory.models.Url
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Profile
