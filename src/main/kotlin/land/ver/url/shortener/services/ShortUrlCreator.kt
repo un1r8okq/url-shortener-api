@@ -2,6 +2,7 @@ package land.ver.url.shortener.services
 
 import jakarta.transaction.Transactional
 import land.ver.url.shortener.LogType
+import land.ver.url.shortener.URL_STUB_LENGTH
 import land.ver.url.shortener.exceptions.InvalidUrlException
 import land.ver.url.shortener.models.NewAuditLog
 import land.ver.url.shortener.models.NewUrl
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service
 class ShortUrlCreator(
     private val auditLogsRepository: AuditLogsRepository,
     private val urlRepository: UrlRepository,
-    private val urlStubGenerator: UrlStubGenerator,
+    private val randomStringGenerator: RandomStringGenerator,
 ) {
     @Transactional
     fun create(longUrl: String): UrlResponse {
@@ -25,7 +26,7 @@ class ShortUrlCreator(
         val url = urlRepository.save(
             NewUrl(
                 longUrl = longUrl,
-                stub = urlStubGenerator.generate(),
+                stub = randomStringGenerator.generate(URL_STUB_LENGTH),
             ),
         )
 

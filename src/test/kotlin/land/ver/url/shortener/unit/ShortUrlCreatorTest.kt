@@ -11,8 +11,8 @@ import land.ver.url.shortener.models.NewUrl
 import land.ver.url.shortener.models.UrlResponse
 import land.ver.url.shortener.repositories.AuditLogsRepository
 import land.ver.url.shortener.repositories.UrlRepository
+import land.ver.url.shortener.services.RandomStringGenerator
 import land.ver.url.shortener.services.ShortUrlCreator
-import land.ver.url.shortener.services.UrlStubGenerator
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -24,7 +24,7 @@ import java.util.UUID
 class ShortUrlCreatorTest {
     private val mockAuditLogsRepository: AuditLogsRepository = mockk<AuditLogsRepository>()
     private val mockUrlRepository: UrlRepository = mockk<UrlRepository>()
-    private val mockStubGenerator: UrlStubGenerator = mockk<UrlStubGenerator>()
+    private val mockStubGenerator: RandomStringGenerator = mockk<RandomStringGenerator>()
     private val creator: ShortUrlCreator = ShortUrlCreator(
         mockAuditLogsRepository,
         mockUrlRepository,
@@ -49,7 +49,7 @@ class ShortUrlCreatorTest {
                 null,
             )
             )
-        every { mockStubGenerator.generate() } returns("1234")
+        every { mockStubGenerator.generate(any()) } returns("1234")
     }
 
     @ParameterizedTest
@@ -99,7 +99,7 @@ class ShortUrlCreatorTest {
         ]
     )
     fun `the stub from the stub generator is used`(generatedStub: String) {
-        every { mockStubGenerator.generate() } returns (generatedStub)
+        every { mockStubGenerator.generate(any()) } returns (generatedStub)
         val longUrl = "https://example.com"
         setupMockUrlRepoToReturn(longUrl, generatedStub)
         val result = creator.create(longUrl)
@@ -111,7 +111,7 @@ class ShortUrlCreatorTest {
     fun `the correct data is passed to the URL repository`() {
         val longurl = "https://example.com"
         val stub = "abcd"
-        every { mockStubGenerator.generate() } returns (stub)
+        every { mockStubGenerator.generate(any()) } returns (stub)
         setupMockUrlRepoToReturn(longurl, stub)
 
         creator.create(longurl)
