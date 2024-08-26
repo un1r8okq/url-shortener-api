@@ -5,9 +5,11 @@ import land.ver.url.shortener.repositories.postgresql.PostgresqlUrlRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 
 class PostgresqlUrlRepositorySaveTests(
     @Autowired private val repository: PostgresqlUrlRepository,
@@ -60,5 +62,16 @@ class PostgresqlUrlRepositorySaveTests(
         val result = repository.save(newUrl)
 
         assertEquals(stub, result.stub)
+    }
+
+    @Test
+    fun `when two URLs with the same stub are added, a DataIntegrityViolationException is thrown`() {
+        val newUrl = NewUrl(
+            longUrl = "",
+            stub = "stub",
+        )
+
+        repository.save(newUrl)
+        assertThrows<DataIntegrityViolationException> { repository.save(newUrl) }
     }
 }

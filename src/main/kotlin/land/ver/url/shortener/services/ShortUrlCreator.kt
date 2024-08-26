@@ -1,58 +1,38 @@
 package land.ver.url.shortener.services
 
-import jakarta.transaction.Transactional
-import land.ver.url.shortener.LogType
-import land.ver.url.shortener.URL_STUB_LENGTH
-import land.ver.url.shortener.exceptions.InvalidUrlException
-import land.ver.url.shortener.models.NewAuditLog
-import land.ver.url.shortener.models.NewUrl
+import land.ver.url.shortener.exceptions.MultipleUrlStubConflictException
 import land.ver.url.shortener.models.UrlResponse
-import land.ver.url.shortener.repositories.AuditLogsRepository
-import land.ver.url.shortener.repositories.UrlRepository
+import land.ver.url.shortener.repositories.exceptions.UrlStubConflictException
+import org.slf4j.Logger
 import org.springframework.stereotype.Service
+
+const val URL_CREATION_RETRY_COUNT = 3
+const val AUDIT_LOG_URL_MAX_LEN = 32
 
 @Service
 class ShortUrlCreator(
-    private val auditLogsRepository: AuditLogsRepository,
-    private val urlRepository: UrlRepository,
-    private val randomStringGenerator: RandomStringGenerator,
+    private val nonRetryingCreator: NonRetryingShortUrlCreator,
+    private val logger: Logger,
 ) {
-    @Transactional
     fun create(longUrl: String): UrlResponse {
-        if (longUrl == "") {
-            throw InvalidUrlException()
+        val stubsAttempted = mutableListOf<String>()
+
+        repeat(URL_CREATION_RETRY_COUNT) { attemptNum ->
+            try {
+                return nonRetryingCreator.create(longUrl)
+            } catch (ex: UrlStubConflictException) {
+                stubsAttempted.add(ex.stub)
+                logger.warn(
+                    "Failed to save URL on attempt {} of $URL_CREATION_RETRY_COUNT due to stub conflict using {}",
+                    attemptNum + 1,
+                    ex.stub,
+                )
+            }
         }
 
-        val url = urlRepository.save(
-            NewUrl(
-                longUrl = longUrl,
-                stub = randomStringGenerator.generate(URL_STUB_LENGTH),
-            ),
+        throw MultipleUrlStubConflictException(
+            attempts = URL_CREATION_RETRY_COUNT,
+            stubsAttempted = stubsAttempted,
         )
-
-        auditLogsRepository.save(
-            NewAuditLog(
-                LogType.URL_SHORTENED,
-                "A short URL with the ID ${url.id}, " +
-                    "stub ${url.stub}, " +
-                    "and long URL ${limitStrLen(url.longUrl)} was created."
-            )
-        )
-
-        return url
-    }
-
-    private fun limitStrLen(input: String): String {
-        @Suppress("MagicNumber")
-        val maxLen = 32
-
-        @Suppress("MagicNumber")
-        val ellipsisLen = 3
-
-        if (input.length <= maxLen) {
-            return input
-        }
-
-        return input.take(maxLen - ellipsisLen).plus("...")
     }
 }

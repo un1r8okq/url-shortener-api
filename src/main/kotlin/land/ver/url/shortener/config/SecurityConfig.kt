@@ -1,4 +1,4 @@
-package land.ver.url.shortener
+package land.ver.url.shortener.config
 
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean

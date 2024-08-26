@@ -17,7 +17,7 @@ private const val MAX_PATH_LEN = 64
 class SeedController(
     private val rndNumSrc: RandomNumberSource,
     private val rndStrGen: RandomStringGenerator,
-    private val urlCreator: ShortUrlCreator,
+    private val shortUrlCreator: ShortUrlCreator,
 ) {
     @PostMapping
     fun seed(@RequestBody request: SeedRequest) {
@@ -27,7 +27,7 @@ class SeedController(
             val subdomain = rndStrGen.generate(alphabet, rndNumSrc.getRandomNumber(1, MAX_SUBDOMAIN_LEN))
             val path = rndStrGen.generate(alphabet, rndNumSrc.getRandomNumber(1, MAX_PATH_LEN))
 
-            urlCreator.create("https://$subdomain.example.com/$path")
+            shortUrlCreator.create("https://$subdomain.example.com/$path")
         }
     }
 }

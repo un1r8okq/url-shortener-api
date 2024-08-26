@@ -90,7 +90,7 @@ class UrlControllerCreateUrlsTest {
     }
 
     private fun setupMocks() {
-        every { urlCreator.create(any()) } returns (
+        every { urlCreator.create("https://example.com") } returns (
             UrlResponse(
                 id = UUID.fromString("01914d64-f165-7942-80bc-9eddbb973bdb"),
                 longUrl = "https://example.com",
