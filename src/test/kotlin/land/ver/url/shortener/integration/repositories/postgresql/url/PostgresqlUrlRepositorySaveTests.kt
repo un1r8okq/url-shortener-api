@@ -1,5 +1,6 @@
-package land.ver.url.shortener.integration.repositories.postgresql
+package land.ver.url.shortener.integration.repositories.postgresql.url
 
+import land.ver.url.shortener.integration.repositories.postgresql.BaseRepositoryTest
 import land.ver.url.shortener.models.NewUrl
 import land.ver.url.shortener.repositories.postgresql.PostgresqlUrlRepository
 import org.junit.jupiter.api.Assertions.assertEquals

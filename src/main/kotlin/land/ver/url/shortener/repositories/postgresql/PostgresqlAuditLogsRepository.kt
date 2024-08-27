@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.transaction.Transactional
-import land.ver.url.shortener.exceptions.InvalidPageNumberException
 import land.ver.url.shortener.models.AuditLogResponse
 import land.ver.url.shortener.models.NewAuditLog
 import land.ver.url.shortener.models.PagedResult
@@ -56,9 +55,7 @@ class PostgresqlAuditLogsRepository(
     }
 
     override fun getAll(pageNumber: Long): PagedResult<AuditLogResponse> {
-        if (pageNumber < 1) {
-            throw InvalidPageNumberException(pageNumber)
-        }
+        require(pageNumber > 0)
 
         val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
 

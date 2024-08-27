@@ -1,16 +1,19 @@
-package land.ver.url.shortener.integration.repositories.postgresql
+package land.ver.url.shortener.integration.repositories.postgresql.url
 
 import com.github.f4b6a3.uuid.UuidCreator
 import jakarta.persistence.EntityManager
+import land.ver.url.shortener.integration.repositories.postgresql.BaseRepositoryTest
 import land.ver.url.shortener.models.UrlResponse
 import land.ver.url.shortener.repositories.postgresql.PostgresqlUrlRepository
 import land.ver.url.shortener.repositories.postgresql.models.Url
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.InvalidDataAccessApiUsageException
 import java.time.Instant
 
 class PostgresqlUrlRepositoryGetAllTests(
@@ -69,6 +72,12 @@ class PostgresqlUrlRepositoryGetAllTests(
         val result = repository.getAll(1)
 
         assertEquals(3, result.paginationMetadata.totalPages)
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = [Long.MIN_VALUE, 0])
+    fun `when page number is less than 1, exception is thrown`(pageNumber: Long) {
+        assertThrows<InvalidDataAccessApiUsageException> { repository.getAll(pageNumber) }
     }
 
     private fun generateUrls(count: Int) = (1..count).map {

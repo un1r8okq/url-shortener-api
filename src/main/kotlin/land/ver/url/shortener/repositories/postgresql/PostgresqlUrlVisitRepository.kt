@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.transaction.Transactional
-import land.ver.url.shortener.exceptions.InvalidPageNumberException
 import land.ver.url.shortener.models.PagedResult
 import land.ver.url.shortener.models.PaginationMetadata
 import land.ver.url.shortener.models.UrlVisitResponse
@@ -53,9 +52,7 @@ class PostgresqlUrlVisitRepository(
     }
 
     override fun getAll(pageNumber: Long): PagedResult<UrlVisitResponse> {
-        if (pageNumber < 1) {
-            throw InvalidPageNumberException(pageNumber)
-        }
+        require(pageNumber > 0)
         val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
 
         val count = queryFactory
