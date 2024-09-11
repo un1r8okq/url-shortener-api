@@ -1,5 +1,6 @@
 package land.ver.url.shortener.controllers
 
+import land.ver.url.shortener.dtos.UserResult
 import land.ver.url.shortener.dtos.auth.CsrfTokenResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,13 +14,18 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/auth")
 class AuthController {
-    @GetMapping("status")
-    fun getStatus(@AuthenticationPrincipal principal: OidcUser?): ResponseEntity<Map<String, String>> {
+    @GetMapping("user")
+    fun getUser(@AuthenticationPrincipal principal: OidcUser?): ResponseEntity<UserResult?> {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
         }
 
-        return ResponseEntity.ok(mapOf("name" to principal.name))
+        return ResponseEntity.ok(
+            UserResult(
+                name = principal.fullName,
+                email = principal.email,
+            ),
+        )
     }
 
     @GetMapping("csrf-token")
