@@ -50,6 +50,7 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("com.querydsl:querydsl-apt")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("com.tngtech.archunit:archunit:1.3.0")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.5")
 }
