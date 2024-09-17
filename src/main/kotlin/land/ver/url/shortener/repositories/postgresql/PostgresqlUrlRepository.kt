@@ -1,6 +1,7 @@
 package land.ver.url.shortener.repositories.postgresql
 
 import com.github.f4b6a3.uuid.UuidCreator
+import com.querydsl.core.Tuple
 import com.querydsl.jpa.JPQLTemplates
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
@@ -75,25 +76,7 @@ class PostgresqlUrlRepository(
             .limit(pageSize)
             .fetch()
 
-        return PagedResult(
-            results = results.map {
-                val url = it.get(QUrl.url)
-                val lastVisited = it.get(1, Instant::class.java)
-
-                UrlResponse(
-                    id = url!!.id,
-                    longUrl = url.longUrl,
-                    stub = url.stub,
-                    createdTimestampUtc = url.createdTimestampUtc,
-                    lastVisitedTimestampUtc = lastVisited,
-                )
-            },
-            paginationMetadata = PaginationMetadata(
-                pageNumber = pageNumber,
-                pageSize = pageSize,
-                totalPages = ceil(urlCount!!.toFloat() / pageSize).toLong(),
-            ),
-        )
+        return buildPagedResult(results, pageNumber, urlCount!!)
     }
 
     override fun findByStub(stub: String): UrlResponse? {
@@ -118,5 +101,60 @@ class PostgresqlUrlRepository(
                     lastVisitedTimestampUtc = lastVisited,
                 )
             }
+    }
+
+    override fun search(query: String, pageNumber: Long): PagedResult<UrlResponse> {
+        require(pageNumber > 0)
+
+        if (query == "") {
+            return getAll(pageNumber)
+        }
+
+        val escapedQuery = query.replace("%", "\\%")
+        val searchClause = QUrl.url.longUrl
+            .likeIgnoreCase("%$escapedQuery%", '\\')
+            .or(QUrl.url.stub.likeIgnoreCase("%$escapedQuery%", '\\'))
+
+        val queryFactory = JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
+        val urlCount = queryFactory
+            .select(QUrl.url.count())
+            .where(searchClause)
+            .from(QUrl.url)
+            .fetchOne()
+
+        val results = queryFactory
+            .select(QUrl.url, QUrlVisit.urlVisit.timestampUtc.max())
+            .from(QUrl.url)
+            .leftJoin(QUrlVisit.urlVisit).on(QUrl.url.id.eq(QUrlVisit.urlVisit.urlId))
+            .where(searchClause)
+            .groupBy(QUrl.url.id)
+            .orderBy(QUrl.url.id.desc(), QUrlVisit.urlVisit.timestampUtc.max().asc())
+            .offset((pageNumber - 1) * pageSize)
+            .limit(pageSize)
+            .fetch()
+
+        return buildPagedResult(results, pageNumber, urlCount!!)
+    }
+
+    private fun buildPagedResult(results: List<Tuple>, pageNumber: Long, urlCount: Long): PagedResult<UrlResponse> {
+        return PagedResult(
+            results = results.map {
+                val url = it.get(QUrl.url)
+                val lastVisited = it.get(1, Instant::class.java)
+
+                UrlResponse(
+                    id = url!!.id,
+                    longUrl = url.longUrl,
+                    stub = url.stub,
+                    createdTimestampUtc = url.createdTimestampUtc,
+                    lastVisitedTimestampUtc = lastVisited,
+                )
+            },
+            paginationMetadata = PaginationMetadata(
+                pageNumber = pageNumber,
+                pageSize = pageSize,
+                totalPages = ceil(urlCount.toFloat() / pageSize).toLong(),
+            ),
+        )
     }
 }

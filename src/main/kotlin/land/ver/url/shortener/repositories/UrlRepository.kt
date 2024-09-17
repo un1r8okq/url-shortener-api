@@ -10,4 +10,5 @@ interface UrlRepository {
     fun save(newUrl: NewUrl): UrlResponse
     fun getAll(pageNumber: Long): PagedResult<UrlResponse>
     fun findByStub(stub: String): UrlResponse?
+    fun search(query: String, pageNumber: Long): PagedResult<UrlResponse>
 }
